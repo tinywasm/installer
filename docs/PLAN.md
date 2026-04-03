@@ -157,6 +157,7 @@ Done. 4 installed, 0 failed, 1 skipped.
 | 7 | [Verify](stages/stage7_verify.md) — `tool version` check after install | Stage 2 | [ ] |
 | 8 | [Uninstall](stages/stage8_uninstall.md) — selective: `UNINSTALL=<tool>` or `all` | Stage 5 | [ ] |
 | 9 | [Tests](stages/stage9_tests.md) — dependency injection + mocks covering all diagram paths | Stage 2 | [ ] |
+| 10 | [Docs](stages/stage10_docs.md) — README.md: quick start, tools, uninstall, adding tools | Stage 9 | [ ] |
 
 ## Flow Diagram
 
