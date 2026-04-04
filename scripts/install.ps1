@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
 
 $repoRaw = "https://raw.githubusercontent.com/tinywasm/installer/main"
 
