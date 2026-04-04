@@ -31,3 +31,4 @@ go version
 go install github.com/tinywasm/installer/cmd/installer@v0.0.29
 $installerBin = "$env:USERPROFILE\go\bin\installer.exe"
 & $installerBin $toolsFlag
+
