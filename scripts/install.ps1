@@ -4,15 +4,11 @@ $ProgressPreference = "SilentlyContinue"
 $repoRaw = "https://raw.githubusercontent.com/tinywasm/installer/main"
 
 # 1. Ask which optional tools to install — before any download begins
+# Skip prompt when stdin is redirected (SSH, iex pipe, CI) to avoid NonInteractive errors.
 $toolsFlag = "-tools=all"
-try {
-    $savedPref = $ErrorActionPreference
-    $ErrorActionPreference = "SilentlyContinue"
+if (-not [Console]::IsInputRedirected) {
     $ans = Read-Host "Install optional tools (tinywasm-cli, tinywasm-server)? [Y/n]"
-    $ErrorActionPreference = $savedPref
     if ($ans -eq 'n' -or $ans -eq 'N') { $toolsFlag = "" }
-} catch {
-    # Non-interactive session (e.g. SSH, iex): default to install all
 }
 
 # 2. Read Go version from go_version.conf
