@@ -6,7 +6,8 @@ import (
 )
 
 // RunWithSpinner runs the given function while displaying a spinner.
-func RunWithSpinner(name string, fn func() error) error {
+// version is shown in the success line: "✅ name — version"
+func RunWithSpinner(name, version string, fn func() error) error {
 	done := make(chan error, 1)
 	go func() {
 		done <- fn()
@@ -20,7 +21,7 @@ func RunWithSpinner(name string, fn func() error) error {
 			if err != nil {
 				fmt.Printf("\r\033[K❌ %s — %v\n", name, err)
 			} else {
-				fmt.Printf("\r\033[K✅ %s\n", name)
+				fmt.Printf("\r\033[K✅ %s — %s\n", name, version)
 			}
 			return err
 		default:

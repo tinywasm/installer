@@ -29,8 +29,8 @@ irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps
 | Tool | Mode | Required | Depends on |
 |------|------|----------|------------|
 | tinygoinstall | GoInstall | yes | — |
-| git | Binary | no | — |
-| gh | Binary | no | git |
+| tinywasm-cli | Binary | no | — |
+| tinywasm-server | Binary | no | tinywasm-cli |
 
 Required tools install automatically. Optional tools are shown in an
 interactive checklist before installation begins.
@@ -84,3 +84,8 @@ Phase 2: Go binary
 ├── Verify each tool
 └── Print summary
 ```
+
+
+## Testing
+
+- [Windows integration test setup](docs/TEST_WINDOWS.md)

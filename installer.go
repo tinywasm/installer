@@ -2,6 +2,8 @@ package installer
 
 import (
 	_ "embed"
+	"fmt"
+	"os"
 )
 
 //go:embed go_version.conf
@@ -34,4 +36,68 @@ type Installer struct{}
 
 func New() *Installer {
 	return &Installer{}
+}
+
+// InstallResult holds counts for the summary line.
+type InstallResult struct {
+	Installed int
+	Failed    int
+	Skipped   int
+}
+
+// InstallAll installs required tools + the optional tools at the given indices.
+// Returns counts for summary output. On required tool failure, writes to stderr and exits.
+func (ins *Installer) InstallAll(tools []Tool, selectedIdx []int, deps *Deps) InstallResult {
+	// Build install list: required first, then selected optional
+	var toInstall []Tool
+	for _, t := range tools {
+		if t.Required {
+			toInstall = append(toInstall, t)
+		}
+	}
+	for _, idx := range selectedIdx {
+		toInstall = append(toInstall, tools[idx])
+	}
+
+	status := make(map[string]bool) // true = success
+	var res InstallResult
+
+	for _, t := range toInstall {
+		if t.DependsOn != "" && !status[t.DependsOn] {
+			fmt.Printf("⏭ %s — skipped (requires %s)\n", t.Name, t.DependsOn)
+			status[t.Name] = false
+			res.Skipped++
+			continue
+		}
+
+		err := RunWithSpinner(t.Name, t.Version, func() error {
+			var e error
+			switch t.Mode {
+			case GoInstall:
+				e = ins.InstallGoInstall(t, deps)
+			case Binary:
+				e = ins.InstallBinary(t, deps)
+			default:
+				return fmt.Errorf("unknown mode")
+			}
+			if e != nil {
+				return e
+			}
+			return ins.Verify(t, deps)
+		})
+
+		if err != nil {
+			status[t.Name] = false
+			res.Failed++
+			if t.Required {
+				fmt.Fprintf(os.Stderr, "FATAL: required tool %s failed: %v\n", t.Name, err)
+				os.Exit(1)
+			}
+		} else {
+			status[t.Name] = true
+			res.Installed++
+		}
+	}
+
+	return res
 }
