@@ -148,16 +148,16 @@ Done. 4 installed, 0 failed, 1 skipped.
 
 | Stage | Description | Dependency | Completed |
 |-------|-------------|------------|-----------|
-| 1 | [Scripts](stages/stage1_skeleton.md) — bash/ps1: install Go + `go install installer` + run | — | [ ] |
-| 2 | [Go skeleton](stages/stage2_go_skeleton.md) — Tool registry, config, CLI, go_version.conf embed | Stage 1 | [ ] |
-| 3 | [Checklist](stages/stage3_checklist.md) — interactive selection of optional tools (`golang.org/x/term`) | Stage 2 | [ ] |
-| 4 | [Spinner](stages/stage4_spinner.md) — goroutine spinner `⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏` | Stage 2 | [ ] |
-| 5 | [GoInstall mode](stages/stage5_mode_go.md) — `go install source@version` | Stage 2 | [ ] |
-| 6 | [Binary mode](stages/stage6_mode_binary.md) — download release from GitHub | Stage 2 | [ ] |
-| 7 | [Verify](stages/stage7_verify.md) — `tool version` check after install | Stage 2 | [ ] |
-| 8 | [Uninstall](stages/stage8_uninstall.md) — selective: `UNINSTALL=<tool>` or `all` | Stage 5 | [ ] |
-| 9 | [Tests](stages/stage9_tests.md) — dependency injection + mocks covering all diagram paths | Stage 2 | [ ] |
-| 10 | [Docs](stages/stage10_docs.md) — README.md: quick start, tools, uninstall, adding tools | Stage 9 | [ ] |
+| 1 | [Scripts](stages/stage1_skeleton.md) — bash/ps1: install Go + `go install installer` + run | — | [x] |
+| 2 | [Go skeleton](stages/stage2_go_skeleton.md) — Tool registry, config, CLI, go_version.conf embed | Stage 1 | [x] |
+| 3 | [Checklist](stages/stage3_checklist.md) — interactive selection of optional tools (`golang.org/x/term`) | Stage 2 | [x] |
+| 4 | [Spinner](stages/stage4_spinner.md) — goroutine spinner `⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏` | Stage 2 | [x] |
+| 5 | [GoInstall mode](stages/stage5_mode_go.md) — `go install source@version` | Stage 2 | [x] |
+| 6 | [Binary mode](stages/stage6_mode_binary.md) — download release from GitHub | Stage 2 | [x] |
+| 7 | [Verify](stages/stage7_verify.md) — `tool version` check after install | Stage 2 | [x] |
+| 8 | [Uninstall](stages/stage8_uninstall.md) — selective: `UNINSTALL=<tool>` or `all` | Stage 5 | [x] |
+| 9 | [Tests](stages/stage9_tests.md) — dependency injection + mocks covering all diagram paths | Stage 2 | [x] |
+| 10 | [Docs](stages/stage10_docs.md) — README.md: quick start, tools, uninstall, adding tools | Stage 9 | [x] |
 
 ## Flow Diagram
 
