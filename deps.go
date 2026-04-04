@@ -11,5 +11,4 @@ type Deps struct {
 	WriteFile   func(path string, data []byte, perm os.FileMode) error // os.WriteFile
 	RemoveFile  func(path string) error                                // os.Remove
 	LookPath    func(name string) (string, error)                      // exec.LookPath
-	Checklist   func(tools []Tool) []int                               // interactive checklist
 }

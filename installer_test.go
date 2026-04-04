@@ -102,61 +102,49 @@ func TestBinary_DownloadFail(t *testing.T) {
 	}
 }
 
-// --- Checklist ---
+// --- ResolveTools ---
 
-func TestChecklist_SelectNone(t *testing.T) {
-	toolsList := []Tool{
-		{Name: "git", Required: false},
+func TestResolveTools_Empty(t *testing.T) {
+	tools := []Tool{
+		{Name: "req", Required: true},
+		{Name: "opt1", Required: false},
 	}
-	d := &Deps{
-		Checklist: func(tools []Tool) []int { return []int{} },
-	}
-	selected := d.Checklist(toolsList)
-	if len(selected) != 0 {
-		t.Fatalf("expected 0 selected tools, got %d", len(selected))
+	if got := ResolveTools(tools, ""); got != nil {
+		t.Fatalf("expected nil, got %v", got)
 	}
 }
 
-func TestChecklist_SelectSome(t *testing.T) {
-	toolsList := []Tool{
-		{Name: "git", Required: false},
-		{Name: "gh", Required: false, DependsOn: "git"},
-		{Name: "lazygit", Required: false},
+func TestResolveTools_All(t *testing.T) {
+	tools := []Tool{
+		{Name: "req", Required: true},
+		{Name: "opt1", Required: false},
+		{Name: "opt2", Required: false},
 	}
-	d := &Deps{
-		Checklist: func(tools []Tool) []int { return []int{0, 2} },
-	}
-	selected := d.Checklist(toolsList)
-	if len(selected) != 2 || selected[0] != 0 || selected[1] != 2 {
-		t.Fatalf("expected [0,2], got %v", selected)
+	got := ResolveTools(tools, "all")
+	if len(got) != 2 || got[0] != 1 || got[1] != 2 {
+		t.Fatalf("expected [1,2], got %v", got)
 	}
 }
 
-func TestChecklist_NoOptional(t *testing.T) {
-	called := false
-	toolsList := []Tool{
-		{Name: "required-tool", Required: true},
+func TestResolveTools_Specific(t *testing.T) {
+	tools := []Tool{
+		{Name: "req", Required: true},
+		{Name: "opt1", Required: false},
+		{Name: "opt2", Required: false},
 	}
-	d := &Deps{
-		Checklist: func(tools []Tool) []int {
-			called = true
-			return []int{}
-		},
+	got := ResolveTools(tools, "opt2")
+	if len(got) != 1 || got[0] != 2 {
+		t.Fatalf("expected [2], got %v", got)
 	}
-	// Filter optional before calling checklist (same logic as main.go)
-	var optional []Tool
-	for _, t := range toolsList {
-		if !t.Required {
-			optional = append(optional, t)
-		}
+}
+
+func TestResolveTools_Unknown(t *testing.T) {
+	tools := []Tool{
+		{Name: "opt1", Required: false},
 	}
-	if len(optional) == 0 {
-		// checklist should not be called
-	} else {
-		d.Checklist(optional)
-	}
-	if called {
-		t.Fatal("checklist should not be called when no optional tools exist")
+	got := ResolveTools(tools, "nonexistent")
+	if len(got) != 0 {
+		t.Fatalf("expected [], got %v", got)
 	}
 }
 

@@ -1,14 +1,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
-
 	"github.com/tinywasm/installer"
 )
 
 func main() {
+	tools := flag.String("tools", "", "optional tools to install: all, or comma-separated names (e.g. tinywasm-cli,tinywasm-server)")
+	flag.Parse()
+
 	ins := installer.New()
 	deps := &installer.Deps{
 		RunCmd: func(name string, args ...string) ([]byte, error) {
@@ -20,7 +23,6 @@ func main() {
 		},
 		RemoveFile: os.Remove,
 		LookPath:   exec.LookPath,
-		Checklist:  installer.ShowChecklist,
 	}
 
 	if os.Getenv("UNINSTALL") != "" {
@@ -31,9 +33,10 @@ func main() {
 		return
 	}
 
-	selectedIdx := deps.Checklist(installer.Tools)
+	selectedIdx := installer.ResolveTools(installer.Tools, *tools)
 	fmt.Printf("go — %s (script)\n", installer.GoVersion)
 
 	res := ins.InstallAll(installer.Tools, selectedIdx, deps)
 	fmt.Printf("\nDone. %d installed, %d failed, %d skipped.\n", res.Installed, res.Failed, res.Skipped)
 }
+
