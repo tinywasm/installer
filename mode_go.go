@@ -17,8 +17,9 @@ func (i *Installer) InstallGoInstall(t Tool, d *Deps) error {
 		return fmt.Errorf("go install failed: %w", err)
 	}
 	if t.Version != "" {
-		if _, err := d.RunCmd(t.Name, "-version", t.Version); err != nil {
-			return fmt.Errorf("%s -version %s failed: %w", t.Name, t.Version, err)
+		out, err := d.RunCmd(t.Name, "-version", t.Version)
+		if err != nil {
+			return fmt.Errorf("%s -version %s failed: %w\n%s", t.Name, t.Version, err, string(out))
 		}
 	}
 	return nil
