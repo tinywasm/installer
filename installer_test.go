@@ -10,10 +10,13 @@ import (
 
 func TestGoInstall_Success(t *testing.T) {
 	ins := New()
-	tool := Tool{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", Version: "0.40.1", Required: true}
+	tool := Tool{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "latest", Version: "0.40.1", Required: true}
 	d := &Deps{
 		RunCmd: func(name string, args ...string) ([]byte, error) {
-			if name == "go" && args[0] == "install" && args[1] == "github.com/tinywasm/tinygo/cmd/tinygoinstall@0.40.1" {
+			if name == "go" && args[0] == "install" && args[1] == "github.com/tinywasm/tinygo/cmd/tinygoinstall@latest" {
+				return nil, nil
+			}
+			if name == "tinygoinstall" && args[0] == "-version" && args[1] == "0.40.1" {
 				return nil, nil
 			}
 			return nil, fmt.Errorf("unexpected command: %s %v", name, args)

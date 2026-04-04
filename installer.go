@@ -18,16 +18,18 @@ const (
 )
 
 type Tool struct {
-	Mode      Mode
-	Name      string
-	Source    string // module path (GoInstall) or GitHub repo (Binary)
-	Version   string // pinned in tool definition
-	Required  bool   // true = always install; false = prompt user
-	DependsOn string // "" = no dependency; "git" = requires git installed first
+	Mode          Mode
+	Name          string
+	Source        string // module path (GoInstall) or GitHub repo (Binary)
+	ModuleVersion string // Go module version for go install (GoInstall only); defaults to "latest"
+	Version       string // tool version to install and verify (e.g. TinyGo 0.40.1)
+	VerifyBinary  string // binary to run for verification; defaults to Name if empty
+	Required      bool   // true = always install; false = prompt user
+	DependsOn     string // "" = no dependency; "git" = requires git installed first
 }
 
 var Tools = []Tool{
-	{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", Version: "0.40.1", Required: true},
+	{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "latest", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
 	{Mode: Binary, Name: "tinywasm-cli", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false},
 	{Mode: Binary, Name: "tinywasm-server", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false, DependsOn: "tinywasm-cli"},
 }
