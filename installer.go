@@ -19,7 +19,8 @@ const (
 
 type Tool struct {
 	Mode          Mode
-	Name          string
+	Name          string // binary name used to invoke the tool
+	Label         string // human-readable display name (shown during install); defaults to Name
 	Source        string // module path (GoInstall) or GitHub repo (Binary)
 	ModuleVersion string // Go module version for go install (GoInstall only); defaults to "latest"
 	Version       string // tool version to install and verify (e.g. TinyGo 0.40.1)
@@ -29,7 +30,7 @@ type Tool struct {
 }
 
 var Tools = []Tool{
-	{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.7", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
+	{Mode: GoInstall, Name: "tinygoinstall", Label: "TinyGo", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.7", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
 	{Mode: Binary, Name: "tinywasm-cli", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false},
 	{Mode: Binary, Name: "tinywasm-server", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false, DependsOn: "tinywasm-cli"},
 }
@@ -72,7 +73,11 @@ func (ins *Installer) InstallAll(tools []Tool, selectedIdx []int, deps *Deps) In
 			continue
 		}
 
-		err := RunWithSpinner(t.Name, t.Version, func() error {
+		label := t.Label
+		if label == "" {
+			label = t.Name
+		}
+		err := RunWithSpinner(label, t.Version, func() error {
 			var e error
 			switch t.Mode {
 			case GoInstall:
