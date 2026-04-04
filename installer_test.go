@@ -16,7 +16,7 @@ func TestGoInstall_Success(t *testing.T) {
 			if name == "go" && args[0] == "install" && args[1] == "github.com/tinywasm/tinygo/cmd/tinygoinstall@latest" {
 				return nil, nil
 			}
-			if name == "tinygoinstall" && args[0] == "-version" && args[1] == "0.40.1" {
+			if name == "tinygoinstall" && args[0] == "-v" && args[1] == "-version" && args[2] == "0.40.1" {
 				return nil, nil
 			}
 			return nil, fmt.Errorf("unexpected command: %s %v", name, args)
