@@ -27,6 +27,6 @@ $env:PATH = "$goBin;$userGoBin;$machinePath"
 go version
 
 # 6. Install and run the Go orchestrator
-go install github.com/tinywasm/installer/cmd/installer@v0.0.25
+go install github.com/tinywasm/installer/cmd/installer@v0.0.27
 $installerBin = "$env:USERPROFILE\go\bin\installer.exe"
 & $installerBin $toolsFlag
