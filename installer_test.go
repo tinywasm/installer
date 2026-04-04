@@ -42,10 +42,13 @@ func TestGoInstall_Fail_Optional(t *testing.T) {
 
 // --- Verify ---
 
+var lookPathNotFound = func(string) (string, error) { return "", fmt.Errorf("not found") }
+
 func TestVerify_Success(t *testing.T) {
 	ins := New()
 	tool := Tool{Name: "testtool", Version: "1.2.3"}
 	d := &Deps{
+		LookPath: lookPathNotFound,
 		RunCmd: func(name string, args ...string) ([]byte, error) {
 			if name == "testtool" && (args[0] == "version" || args[0] == "--version") {
 				return []byte("version 1.2.3"), nil
@@ -62,6 +65,7 @@ func TestVerify_DashDashVersion(t *testing.T) {
 	ins := New()
 	tool := Tool{Name: "testtool", Version: "2.0.0"}
 	d := &Deps{
+		LookPath: lookPathNotFound,
 		RunCmd: func(name string, args ...string) ([]byte, error) {
 			if args[0] == "--version" {
 				return []byte("testtool 2.0.0"), nil
@@ -78,6 +82,7 @@ func TestVerify_Mismatch(t *testing.T) {
 	ins := New()
 	tool := Tool{Name: "testtool", Version: "1.2.3"}
 	d := &Deps{
+		LookPath: lookPathNotFound,
 		RunCmd: func(name string, args ...string) ([]byte, error) {
 			return []byte("testtool 9.9.9"), nil
 		},
