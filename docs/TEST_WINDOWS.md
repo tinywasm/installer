@@ -107,7 +107,7 @@ WIN_PASS=user
 
 ```bash
 cd ~/tinywasm/installer
-go test -v -tags integration -run TestWindowsConnectivity ./...
+go test -v -tags integration -run TestInstallScript ./...
 ```
 
 Salida esperada:

@@ -9,8 +9,11 @@ $goVersion = (Invoke-RestMethod "$repoRaw/go_version.conf").Trim()
 $env:GO_VERSION = $goVersion
 irm https://raw.githubusercontent.com/tinywasm/goinstall/main/scripts/install.ps1 | iex
 
-# 3. Refresh PATH so go.exe is available in this session
-$env:PATH = "C:\Program Files\Go\bin;" + [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
+# 3. Refresh PATH so go.exe and installed binaries are available in this session
+$goBin = "C:\Program Files\Go\bin"
+$userGoBin = "$env:USERPROFILE\go\bin"
+$machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
+$env:PATH = "$goBin;$userGoBin;$machinePath"
 
 # 4. Verify
 go version
