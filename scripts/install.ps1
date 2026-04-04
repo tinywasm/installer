@@ -4,10 +4,14 @@ $ProgressPreference = "SilentlyContinue"
 $repoRaw = "https://raw.githubusercontent.com/tinywasm/installer/main"
 
 # 1. Ask which optional tools to install — before any download begins
-$toolsFlag = ""
-$ans = Read-Host "Install optional tools (tinywasm-cli, tinywasm-server)? [Y/n]"
-if ($ans -ne 'n' -and $ans -ne 'N') {
-    $toolsFlag = "-tools=all"
+$toolsFlag = "-tools=all"
+if ([Environment]::UserInteractive) {
+    try {
+        $ans = Read-Host "Install optional tools (tinywasm-cli, tinywasm-server)? [Y/n]"
+        if ($ans -eq 'n' -or $ans -eq 'N') { $toolsFlag = "" }
+    } catch {
+        # Non-interactive session (e.g. SSH): default to install all
+    }
 }
 
 # 2. Read Go version from go_version.conf
