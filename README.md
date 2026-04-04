@@ -1,4 +1,5 @@
 # tinywasm/installer
+<img src="docs/img/badges.svg">
 
 Single command to set up a complete tinywasm development environment.
 
