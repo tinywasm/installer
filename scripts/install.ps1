@@ -20,4 +20,5 @@ go version
 
 # 5. Install and run the Go orchestrator
 go install github.com/tinywasm/installer/cmd/installer@latest
-installer @args
+$installerBin = "$env:USERPROFILE\go\bin\installer.exe"
+& $installerBin @args
