@@ -29,7 +29,7 @@ type Tool struct {
 }
 
 var Tools = []Tool{
-	{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.4", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
+	{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.5", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
 	{Mode: Binary, Name: "tinywasm-cli", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false},
 	{Mode: Binary, Name: "tinywasm-server", Source: "https://github.com/tinywasm/tinywasm", Version: "0.1.0", Required: false, DependsOn: "tinywasm-cli"},
 }
