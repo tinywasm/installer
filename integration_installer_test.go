@@ -48,4 +48,11 @@ func TestInstallScript(t *testing.T) {
 		t.Fatalf("installer binary not found in PATH after install — got: %q", out)
 	}
 	t.Log("installer binary found in PATH ✅")
+
+	t.Log("Step 6: verify TinyGo is installed")
+	out = runSSH(t, env, `tinygo version`)
+	if !strings.Contains(out, "0.40.1") {
+		t.Fatalf("expected TinyGo 0.40.1, got: %q", out)
+	}
+	t.Logf("TinyGo installed: %s", strings.TrimSpace(out))
 }
