@@ -2,18 +2,19 @@ package installer
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
-	"time"
 )
+
+// NOTE (self-update refactor): verifyChecksum, resolveLatestVersion and
+// DefaultDownload were MOVED to github.com/tinywasm/update. This file no longer
+// compiles until InstallBinary and cmd/tinywasm-installer are rewired to call
+// update.VerifyChecksum / update.ResolveLatestVersion / update.DefaultDownload.
+// See docs/PLAN.md.
 
 // InstallBinary handles the installation of tools from GitHub releases.
 func (ins *Installer) InstallBinary(t Tool, d *Deps) error {
@@ -74,60 +75,6 @@ func (ins *Installer) InstallBinary(t Tool, d *Deps) error {
 	return nil
 }
 
-func resolveLatestVersion(source string, d *Deps) (string, error) {
-	// Source is expected to be https://github.com/owner/repo
-	parts := strings.Split(strings.TrimSuffix(source, "/"), "/")
-	if len(parts) < 2 {
-		return "", fmt.Errorf("invalid source URL: %s", source)
-	}
-	owner := parts[len(parts)-2]
-	repo := parts[len(parts)-1]
-
-	apiURL := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", owner, repo)
-	data, err := d.Download(apiURL)
-	if err != nil {
-		return "", err
-	}
-
-	var release struct {
-		TagName string `json:"tag_name"`
-	}
-	if err := json.Unmarshal(data, &release); err != nil {
-		return "", fmt.Errorf("failed to parse GitHub API response: %w", err)
-	}
-
-	if release.TagName == "" {
-		return "", fmt.Errorf("no tag_name found in GitHub API response")
-	}
-
-	return release.TagName, nil
-}
-
-func verifyChecksum(asset string, data []byte, sums []byte) error {
-	sum := sha256.Sum256(data)
-	got := hex.EncodeToString(sum[:])
-
-	lines := strings.Split(string(sums), "\n")
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if line == "" {
-			continue
-		}
-		parts := strings.Fields(line)
-		if len(parts) < 2 {
-			continue
-		}
-		if parts[1] == asset {
-			if parts[0] == got {
-				return nil
-			}
-			return fmt.Errorf("checksum mismatch for %s: want %s, got %s", asset, parts[0], got)
-		}
-	}
-
-	return fmt.Errorf("checksum for %s not found in checksums.txt", asset)
-}
-
 func getInstallPath(name string) string {
 	gopath := os.Getenv("GOPATH")
 	if gopath == "" {
@@ -138,22 +85,4 @@ func getInstallPath(name string) string {
 		return filepath.Join(gopath, "bin", name+".exe")
 	}
 	return filepath.Join(gopath, "bin", name)
-}
-
-// DefaultDownload is a production implementation of Download
-func DefaultDownload(url string) ([]byte, error) {
-	client := &http.Client{
-		Timeout: 60 * time.Second,
-	}
-	resp, err := client.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("bad status: %s", resp.Status)
-	}
-
-	return io.ReadAll(resp.Body)
 }

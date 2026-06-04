@@ -1,8 +1,6 @@
 package installer
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"runtime"
 	"strings"
@@ -95,19 +93,6 @@ func TestInstallBinary_ResolvesLatestVersion(t *testing.T) {
 	}
 }
 
-// #1 SECURITY: Test verifyChecksum helper directly
-func TestVerifyChecksum_RejectsMismatch(t *testing.T) {
-	data := []byte("binary-bytes")
-	// SHA256 of "binary-bytes" is 4458...
-	sums := "deadbeef  tinywasm-linux-amd64\n" // intentional mismatch
-	if err := verifyChecksum("tinywasm-linux-amd64", data, []byte(sums)); err == nil {
-		t.Fatal("expected error on checksum mismatch")
-	}
-
-	// Correct checksum
-	sum := sha256.Sum256(data)
-	correctSums := fmt.Sprintf("%s  tinywasm-linux-amd64\n", hex.EncodeToString(sum[:]))
-	if err := verifyChecksum("tinywasm-linux-amd64", data, []byte(correctSums)); err != nil {
-		t.Errorf("expected success on correct checksum, got: %v", err)
-	}
-}
+// NOTE (self-update refactor): TestVerifyChecksum_RejectsMismatch was MOVED to
+// github.com/tinywasm/update (checksum_test.go: TestVerifyChecksum). The installer
+// now consumes update.VerifyChecksum, so the contract is tested there.
