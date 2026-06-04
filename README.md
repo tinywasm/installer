@@ -19,19 +19,17 @@ irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps
 
 ## What it does
 
-1. Installs Go (version pinned in `go_version.conf`)
-2. Builds and runs the Go installer binary
-3. Shows an interactive checklist of optional tools
-4. Installs all required + selected tools with progress spinner
-5. Verifies each tool after installation
+1. Downloads the latest `tinywasm-installer` binary for your platform
+2. Shows an interactive checklist of optional tools
+3. Installs all required + selected tools (including Go/TinyGo) with progress spinner
+4. Verifies each tool after installation
 
 ## Tools
 
 | Tool | Mode | Required | Depends on |
 |------|------|----------|------------|
 | tinygoinstall | GoInstall | yes | — |
-| tinywasm-cli | Binary | no | — |
-| tinywasm-server | Binary | no | tinywasm-cli |
+| tinywasm | Binary | yes | — |
 
 Required tools install automatically. Optional tools are shown in an
 interactive checklist before installation begins.
@@ -75,11 +73,10 @@ If the tool depends on another:
 
 ```
 Phase 1: bash / ps1
-├── Read Go version from go_version.conf
-├── Install Go via goinstall script
-└── go install tinywasm/installer → run installer
+├── Detect OS/Arch
+└── Download tinywasm-installer-{os}-{arch} → run installer
 
-Phase 2: Go binary
+Phase 2: Go binary (tinywasm-installer)
 ├── Show checklist of optional tools
 ├── Install required + selected tools
 ├── Verify each tool

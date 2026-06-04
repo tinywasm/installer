@@ -1,34 +1,21 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$repoRaw = "https://raw.githubusercontent.com/tinywasm/installer/main"
-
-# 1. Ask which optional tools to install — before any download begins
-# Skip prompt when stdin is redirected (SSH, iex pipe, CI) to avoid NonInteractive errors.
-$toolsFlag = "-tools=all"
-if (-not [Console]::IsInputRedirected) {
-    $ans = Read-Host "Install optional tools (tinywasm-cli, tinywasm-server)? [Y/n]"
-    if ($ans -eq 'n' -or $ans -eq 'N') { $toolsFlag = "" }
+# 1. Detect Architecture
+$arch = "amd64"
+if ($PSVersionTable.OS -eq "Windows") {
+    if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { $arch = "arm64" }
 }
 
-# 2. Read Go version from go_version.conf
-$goVersion = (Invoke-RestMethod "$repoRaw/go_version.conf").Trim()
+$binary = "tinywasm-installer-windows-$arch.exe"
+$url = "https://github.com/tinywasm/installer/releases/latest/download/$binary"
 
-# 3. Install Go
-$env:GO_VERSION = $goVersion
-irm https://raw.githubusercontent.com/tinywasm/goinstall/main/scripts/install.ps1 | iex
+# 2. Download
+Write-Host "Downloading $binary..."
+Invoke-WebRequest -Uri $url -OutFile $binary
 
-# 4. Refresh PATH so go.exe and installed binaries are available in this session
-$goBin = "C:\Program Files\Go\bin"
-$userGoBin = "$env:USERPROFILE\go\bin"
-$machinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
-$env:PATH = "$goBin;$userGoBin;$machinePath"
+# 3. Execute
+& .\"$binary" $args
 
-# 5. Verify
-go version
-
-# 6. Install and run the Go orchestrator
-go install github.com/tinywasm/installer/cmd/installer@v0.0.29
-$installerBin = "$env:USERPROFILE\go\bin\installer.exe"
-& $installerBin $toolsFlag
-
+# 4. Cleanup
+Remove-Item "$binary"

@@ -3,11 +3,9 @@
 ```mermaid
 flowchart TD
     subgraph PHASE1["Phase 1 — bash / ps1"]
-        A[install.sh / install.ps1] --> B[Read Go version\nfrom go_version.conf]
-        B --> C[Install Go via\ngoinstall script]
-        C --> C1{go version\n== required?}
-        C1 -->|no| ERR1[Exit: Go install failed]
-        C1 -->|yes| D["go install\ntinywasm/installer"]
+        A[install.sh / install.ps1] --> B[Detect OS/Arch]
+        B --> C[Download raw binary\ntinywasm-installer-{os}-{arch}]
+        C --> D[chmod +x]
         D --> E[Run: installer]
     end
 
@@ -81,8 +79,8 @@ Done. 4 installed, 0 failed, 1 skipped.
 
 | Phase | Runtime | Responsibility |
 |-------|---------|---------------|
-| 1 | bash / ps1 | Install Go only (reads version from `go_version.conf` via GitHub URL) |
-| 2 | Go binary | Everything else: load embedded `go_version.conf`, checklist, spinner, GoInstall, Binary, verify, uninstall |
+| 1 | bash / ps1 | Bootstrap: detect OS/Arch, download `tinywasm-installer` binary, execute it. |
+| 2 | Go binary | Everything: install Go (if needed), checklist, spinner, GoInstall, Binary, checksum verify, uninstall |
 
 ## Required vs Optional
 

@@ -1,21 +1,32 @@
 #!/bin/bash
 set -e
 
-REPO_RAW="https://raw.githubusercontent.com/tinywasm/installer/main"
+# 1. Detect OS and Architecture
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m)
 
-# 1. Read Go version from go_version.conf (single source of truth)
-GO_VERSION=$(curl -fsSL "$REPO_RAW/go_version.conf" | tr -d '[:space:]')
+case $ARCH in
+    x86_64) ARCH="amd64" ;;
+    aarch64|arm64) ARCH="arm64" ;;
+    *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
+esac
 
-# 2. Install Go using goinstall script (script handles sudo internally)
-curl -fsSL https://raw.githubusercontent.com/tinywasm/goinstall/main/scripts/install.sh | bash -s "$GO_VERSION"
-hash -r
+case $OS in
+    linux) ;;
+    darwin) ;;
+    *) echo "Unsupported OS: $OS"; exit 1 ;;
+esac
 
-# 3. Verify Go is available
-if ! command -v go &>/dev/null; then
-    echo "Error: Go installation failed"
-    exit 1
-fi
+# 2. Download the installer binary from GitHub releases
+BINARY="tinywasm-installer-$OS-$ARCH"
+URL="https://github.com/tinywasm/installer/releases/latest/download/$BINARY"
 
-# 4. Install and run the Go orchestrator
-go install github.com/tinywasm/installer/cmd/installer@latest
-"$(go env GOPATH)/bin/installer" "$@"
+echo "Downloading $BINARY..."
+curl -fsSL "$URL" -o "$BINARY"
+chmod +x "$BINARY"
+
+# 3. Execute the installer
+./"$BINARY" "$@"
+
+# 4. Cleanup
+rm "$BINARY"
