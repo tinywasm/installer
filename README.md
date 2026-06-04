@@ -71,6 +71,8 @@ If the tool depends on another:
 
 ## How it works
 
+Version resolution, checksum verification, and network downloads are powered by [tinywasm/update](https://github.com/tinywasm/update).
+
 ```
 Phase 1: bash / ps1
 ├── Detect OS/Arch
