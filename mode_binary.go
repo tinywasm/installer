@@ -8,25 +8,19 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-)
 
-// NOTE (self-update refactor): verifyChecksum, resolveLatestVersion and
-// DefaultDownload were MOVED to github.com/tinywasm/update. This file no longer
-// compiles until InstallBinary and cmd/tinywasm-installer are rewired to call
-// update.VerifyChecksum / update.ResolveLatestVersion / update.DefaultDownload.
-// See docs/PLAN.md.
+	"github.com/tinywasm/update"
+)
 
 // InstallBinary handles the installation of tools from GitHub releases.
 func (ins *Installer) InstallBinary(t Tool, d *Deps) error {
 	version := t.Version
 	if version == "" {
-		v, err := resolveLatestVersion(t.Source, d)
+		v, err := update.ResolveLatestVersion(t.Source, d.Download)
 		if err != nil {
 			return fmt.Errorf("failed to resolve latest version: %w", err)
 		}
-		version = v
-		// Strip 'v' prefix if present for URL construction
-		version = strings.TrimPrefix(version, "v")
+		version = strings.TrimPrefix(v, "v")
 	}
 
 	osStr := runtime.GOOS
@@ -50,7 +44,7 @@ func (ins *Installer) InstallBinary(t Tool, d *Deps) error {
 	if err != nil {
 		return fmt.Errorf("failed to download checksums: %w", err)
 	}
-	if err := verifyChecksum(asset, data, sums); err != nil {
+	if err := update.VerifyChecksum(asset, data, sums); err != nil {
 		return err
 	}
 

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
 	"github.com/tinywasm/installer"
+	"github.com/tinywasm/update"
 )
 
 func main() {
@@ -17,7 +19,7 @@ func main() {
 		RunCmd: func(name string, args ...string) ([]byte, error) {
 			return exec.Command(name, args...).CombinedOutput()
 		},
-		Download: installer.DefaultDownload,
+		Download: update.DefaultDownload,
 		WriteFile: func(path string, data []byte, perm os.FileMode) error {
 			return os.WriteFile(path, data, perm)
 		},
