@@ -33,7 +33,7 @@ func TestInstallScript(t *testing.T) {
 	t.Log("Step 3: run install.ps1")
 	// irm fetches the script from GitHub; iex executes it.
 	// We use -EncodedCommand (via runSSH) so cmd.exe quoting is not an issue.
-	runSSH(t, env, `irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps1 | iex`)
+	runSSH(t, env, `irm https://raw.githubusercontent.com/webtyp/installer/main/scripts/install.ps1 | iex`)
 
 	t.Log("Step 4: verify Go is installed")
 	out := runSSH(t, env, `& "C:\Program Files\Go\bin\go.exe" version`)

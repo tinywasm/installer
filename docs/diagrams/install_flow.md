@@ -4,7 +4,7 @@
 flowchart TD
     subgraph PHASE1["Phase 1 — bash / ps1"]
         A[install.sh / install.ps1] --> B[Detect OS/Arch]
-        B --> C[Download raw binary\ntinywasm-installer-{os}-{arch}]
+        B --> C[Download raw binary\nwebtyp-installer-{os}-{arch}]
         C --> D[chmod +x]
         D --> E[Run: installer]
     end
@@ -79,7 +79,7 @@ Done. 4 installed, 0 failed, 1 skipped.
 
 | Phase | Runtime | Responsibility |
 |-------|---------|---------------|
-| 1 | bash / ps1 | Bootstrap: detect OS/Arch, download `tinywasm-installer` binary, execute it. |
+| 1 | bash / ps1 | Bootstrap: detect OS/Arch, download `webtyp-installer` binary, execute it. |
 | 2 | Go binary | Everything: install Go (if needed), checklist, spinner, GoInstall, Binary, checksum verify, uninstall |
 
 ## Required vs Optional

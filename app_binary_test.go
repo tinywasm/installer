@@ -7,37 +7,37 @@ import (
 	"testing"
 )
 
-// EXPECTED: the catalog installs the `tinywasm` binary from the public
-// distribution repo tinywasm/app (not the outdated tinywasm-cli/tinywasm-server
-// pointing at tinywasm/tinywasm). Single tool, Binary mode.
-func TestTools_TinywasmFromAppRepo(t *testing.T) {
+// EXPECTED: the catalog installs the `webtyp` binary from the public
+// distribution repo webtyp/app (not the outdated webtyp-cli/webtyp-server
+// pointing at webtyp/webtyp). Single tool, Binary mode.
+func TestTools_WebTypFromAppRepo(t *testing.T) {
 	var found *Tool
 	for i := range Tools {
-		if Tools[i].Name == "tinywasm" {
+		if Tools[i].Name == "webtyp" {
 			found = &Tools[i]
 			break
 		}
 	}
 	if found == nil {
-		t.Fatal("expected a 'tinywasm' tool installing the app binary")
+		t.Fatal("expected a 'webtyp' tool installing the app binary")
 	}
 	if found.Mode != Binary {
-		t.Errorf("tinywasm must use Binary mode, got %v", found.Mode)
+		t.Errorf("webtyp must use Binary mode, got %v", found.Mode)
 	}
-	if found.Source != "https://github.com/tinywasm/app" {
-		t.Errorf("tinywasm must be sourced from tinywasm/app, got %q", found.Source)
+	if found.Source != "https://github.com/webtyp/app" {
+		t.Errorf("webtyp must be sourced from webtyp/app, got %q", found.Source)
 	}
 }
 
 // EXPECTED: InstallBinary downloads the RAW gorelease asset
-// (tinywasm-{os}-{arch}[.exe]) directly — no archive, no version-in-name,
+// (webtyp-{os}-{arch}[.exe]) directly — no archive, no version-in-name,
 // matching what `gorelease` publishes and the low-level curl fallback.
 func TestInstallBinary_DownloadsRawGoreleaseAsset(t *testing.T) {
 	ins := New()
 	tool := Tool{
 		Mode:    Binary,
-		Name:    "tinywasm",
-		Source:  "https://github.com/tinywasm/app",
+		Name:    "webtyp",
+		Source:  "https://github.com/webtyp/app",
 		Version: "0.3.0",
 	}
 
@@ -52,11 +52,11 @@ func TestInstallBinary_DownloadsRawGoreleaseAsset(t *testing.T) {
 
 	_ = ins.InstallBinary(tool, d)
 
-	asset := fmt.Sprintf("tinywasm-%s-%s", runtime.GOOS, runtime.GOARCH)
+	asset := fmt.Sprintf("webtyp-%s-%s", runtime.GOOS, runtime.GOARCH)
 	if runtime.GOOS == "windows" {
 		asset += ".exe"
 	}
-	want := fmt.Sprintf("https://github.com/tinywasm/app/releases/download/v0.3.0/%s", asset)
+	want := fmt.Sprintf("https://github.com/webtyp/app/releases/download/v0.3.0/%s", asset)
 
 	if gotURL != want {
 		t.Errorf("expected raw gorelease asset URL\n want: %s\n  got: %s", want, gotURL)
@@ -65,13 +65,13 @@ func TestInstallBinary_DownloadsRawGoreleaseAsset(t *testing.T) {
 
 // EXPECTED: with no pinned Version, the installer must query the latest published
 // release (GitHub API releases/latest) and use that tag for the download URL —
-// so publishing a new tinywasm/app version does NOT require updating the installer.
+// so publishing a new webtyp/app version does NOT require updating the installer.
 func TestInstallBinary_ResolvesLatestVersion(t *testing.T) {
 	ins := New()
 	tool := Tool{
 		Mode:    Binary,
-		Name:    "tinywasm",
-		Source:  "https://github.com/tinywasm/app",
+		Name:    "webtyp",
+		Source:  "https://github.com/webtyp/app",
 		Version: "", // empty = resolve latest at runtime, do not hardcode
 	}
 
@@ -94,5 +94,5 @@ func TestInstallBinary_ResolvesLatestVersion(t *testing.T) {
 }
 
 // NOTE (self-update refactor): TestVerifyChecksum_RejectsMismatch was MOVED to
-// github.com/tinywasm/update (checksum_test.go: TestVerifyChecksum). The installer
+// webtyp.com/update (checksum_test.go: TestVerifyChecksum). The installer
 // now consumes update.VerifyChecksum, so the contract is tested there.

@@ -6,12 +6,12 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/tinywasm/installer"
-	"github.com/tinywasm/update"
+	"webtyp.com/installer"
+	"webtyp.com/update"
 )
 
 func main() {
-	tools := flag.String("tools", "", "optional tools to install: all, or comma-separated names (e.g. tinywasm-cli,tinywasm-server)")
+	tools := flag.String("tools", "", "optional tools to install: all, or comma-separated names (e.g. webtyp-cli,webtyp-server)")
 	flag.Parse()
 
 	ins := installer.New()

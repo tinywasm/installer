@@ -1,25 +1,25 @@
-# tinywasm/installer
+# webtyp/installer
 <img src="docs/img/badges.svg">
 
-Single command to set up a complete tinywasm development environment.
+Single command to set up a complete webtyp development environment.
 
 ## Quick start
 
 ### Linux / macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/webtyp/installer/main/scripts/install.sh | bash
 ```
 
 ### Windows (PowerShell as Admin)
 
 ```powershell
-irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/webtyp/installer/main/scripts/install.ps1 | iex
 ```
 
 ## What it does
 
-1. Downloads the latest `tinywasm-installer` binary for your platform
+1. Downloads the latest `webtyp-installer` binary for your platform
 2. Shows an interactive checklist of optional tools
 3. Installs all required + selected tools (including Go/TinyGo) with progress spinner
 4. Verifies each tool after installation
@@ -29,7 +29,7 @@ irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps
 | Tool | Mode | Required | Depends on |
 |------|------|----------|------------|
 | tinygoinstall | GoInstall | yes | — |
-| tinywasm | Binary | yes | — |
+| webtyp | Binary | yes | — |
 
 Required tools install automatically. Optional tools are shown in an
 interactive checklist before installation begins.
@@ -71,14 +71,14 @@ If the tool depends on another:
 
 ## How it works
 
-Version resolution, checksum verification, and network downloads are powered by [tinywasm/update](https://github.com/tinywasm/update).
+Version resolution, checksum verification, and network downloads are powered by [webtyp/update](https://github.com/webtyp/update).
 
 ```
 Phase 1: bash / ps1
 ├── Detect OS/Arch
-└── Download tinywasm-installer-{os}-{arch} → run installer
+└── Download webtyp-installer-{os}-{arch} → run installer
 
-Phase 2: Go binary (tinywasm-installer)
+Phase 2: Go binary (webtyp-installer)
 ├── Show checklist of optional tools
 ├── Install required + selected tools
 ├── Verify each tool

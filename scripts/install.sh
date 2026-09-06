@@ -18,8 +18,8 @@ case $OS in
 esac
 
 # 2. Download the installer binary from GitHub releases
-BINARY="tinywasm-installer-$OS-$ARCH"
-URL="https://github.com/tinywasm/installer/releases/latest/download/$BINARY"
+BINARY="webtyp-installer-$OS-$ARCH"
+URL="https://github.com/webtyp/installer/releases/latest/download/$BINARY"
 
 echo "Downloading $BINARY..."
 curl -fsSL "$URL" -o "$BINARY"

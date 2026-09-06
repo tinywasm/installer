@@ -28,7 +28,7 @@ type Tool struct {
 }
 
 var tools = []Tool{
-    {Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", Required: true},
+    {Mode: GoInstall, Name: "tinygoinstall", Source: "webtyp.com/tinygo/cmd/tinygoinstall", Required: true},
     {Mode: Binary,    Name: "git",           Source: "...", Required: false},
     {Mode: Binary,    Name: "gh",            Source: "...", Required: false, DependsOn: "git"},
 }

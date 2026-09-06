@@ -106,7 +106,7 @@ WIN_PASS=user
 ## 5. Correr el test
 
 ```bash
-cd ~/tinywasm/installer
+cd ~/webtyp/installer
 go test -v -tags integration -run TestInstallScript ./...
 ```
 

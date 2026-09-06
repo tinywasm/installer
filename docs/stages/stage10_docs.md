@@ -7,22 +7,22 @@ README.md del repo con quick start, requisitos, lista de herramientas, uninstall
 ## README.md
 
 ```markdown
-# tinywasm/installer
+# webtyp/installer
 
-Single command to set up a complete tinywasm development environment.
+Single command to set up a complete webtyp development environment.
 
 ## Quick start
 
 ### Linux / macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/webtyp/installer/main/scripts/install.sh | bash
 ```
 
 ### Windows (PowerShell as Admin)
 
 ```powershell
-irm https://raw.githubusercontent.com/tinywasm/installer/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/webtyp/installer/main/scripts/install.ps1 | iex
 ```
 
 ## What it does
@@ -85,7 +85,7 @@ If the tool depends on another:
 Phase 1: bash / ps1
 ├── Read Go version from go_version.conf
 ├── Install Go via goinstall script
-└── go install tinywasm/installer → run installer
+└── go install webtyp/installer → run installer
 
 Phase 2: Go binary
 ├── Show checklist of optional tools

@@ -30,8 +30,8 @@ type Tool struct {
 }
 
 var Tools = []Tool{
-	{Mode: GoInstall, Name: "tinygoinstall", Label: "TinyGo", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.7", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
-	{Mode: Binary, Name: "tinywasm", Source: "https://github.com/tinywasm/app", Version: "", Required: true},
+	{Mode: GoInstall, Name: "tinygoinstall", Label: "TinyGo", Source: "webtyp.com/tinygo/cmd/tinygoinstall", ModuleVersion: "v0.0.7", Version: "0.40.1", VerifyBinary: "tinygo", Required: true},
+	{Mode: Binary, Name: "webtyp", Source: "https://github.com/webtyp/app", Version: "", Required: true},
 }
 
 type Installer struct{}

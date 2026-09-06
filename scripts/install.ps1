@@ -7,8 +7,8 @@ if ($PSVersionTable.OS -eq "Windows") {
     if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { $arch = "arm64" }
 }
 
-$binary = "tinywasm-installer-windows-$arch.exe"
-$url = "https://github.com/tinywasm/installer/releases/latest/download/$binary"
+$binary = "webtyp-installer-windows-$arch.exe"
+$url = "https://github.com/webtyp/installer/releases/latest/download/$binary"
 
 # 2. Download
 Write-Host "Downloading $binary..."

@@ -7,7 +7,7 @@ Implement `Binary` mode: download pre-built binary from GitHub releases.
 ## URL pattern
 
 ```
-https://github.com/tinywasm/{name}/releases/download/v{version}/{name}_v{version}_{os}_{arch}.tar.gz
+https://github.com/webtyp/{name}/releases/download/v{version}/{name}_v{version}_{os}_{arch}.tar.gz
 ```
 
 ## Steps

@@ -10,10 +10,10 @@ import (
 
 func TestGoInstall_Success(t *testing.T) {
 	ins := New()
-	tool := Tool{Mode: GoInstall, Name: "tinygoinstall", Source: "github.com/tinywasm/tinygo/cmd/tinygoinstall", ModuleVersion: "latest", Version: "0.40.1", Required: true}
+	tool := Tool{Mode: GoInstall, Name: "tinygoinstall", Source: "webtyp.com/tinygo/cmd/tinygoinstall", ModuleVersion: "latest", Version: "0.40.1", Required: true}
 	d := &Deps{
 		RunCmd: func(name string, args ...string) ([]byte, error) {
-			if name == "go" && args[0] == "install" && args[1] == "github.com/tinywasm/tinygo/cmd/tinygoinstall@latest" {
+			if name == "go" && args[0] == "install" && args[1] == "webtyp.com/tinygo/cmd/tinygoinstall@latest" {
 				return nil, nil
 			}
 			if name == "tinygoinstall" && args[0] == "-v" && args[1] == "-version" && args[2] == "0.40.1" {

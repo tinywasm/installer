@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/tinywasm/update"
+	"webtyp.com/update"
 )
 
 // InstallBinary handles the installation of tools from GitHub releases.
